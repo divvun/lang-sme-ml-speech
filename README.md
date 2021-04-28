@@ -10,7 +10,7 @@
  
 4. If everything worked out fine with the previous steps, you can now start the common training of TTS and ASR with `python train_forward.py`. Note, the common training was not testet because of cuda OOM, but each function inside it was tested. 
 
-5. Preptrained models (more of them) necessary for this run are [here](https://drive.google.com/drive/folders/18nTVbsUlkbN4duvcbIeSS_gNsmG5bOiZ?usp=sharing). Place the folder `checkpoint-27363` that you dowloaded in `asr_output/` AND in  `sme_speech_tts.asr_forward/`.
+5. Preptrained models (more of them) necessary for this run are [here](https://drive.google.com/drive/folders/18nTVbsUlkbN4duvcbIeSS_gNsmG5bOiZ?usp=sharing). Place the folder (don't rename) `checkpoint-27363` that you dowloaded in `asr_output/` AND in  `checkpoints/sme_speech_tts.asr_forward/` (make a new dir in `checkpoints/`).
 
 
 Further instructions on inference TBD.
