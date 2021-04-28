@@ -1,0 +1,11 @@
+numba==0.49.1
+librosa==0.7.2
+torchaudio
+soundfile
+torch>=1.2.0
+scipy
+tensorboard
+matplotlib
+unidecode
+transformers==4.4.0
+

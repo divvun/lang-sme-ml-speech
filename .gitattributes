@@ -1,0 +1,4 @@
+/sme-freecorpus.txt filter=lfs diff=lfs merge=lfs -text
+*.pyt filter=lfs diff=lfs merge=lfs -text
+*.pt filter=lfs diff=lfs merge=lfs -text
+/checkpoints/sme_speech_tts.tacotron/checkpoint_3000_st filter=lfs diff=lfs merge=lfs -text
