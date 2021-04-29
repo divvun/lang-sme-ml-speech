@@ -4,7 +4,7 @@ librosa==0.7.2
 soundfile
 # torch>=1.2.0
 scipy
-tensorboard
+# tensorboard
 matplotlib
 unidecode
 transformers==4.4.0
