@@ -31,13 +31,14 @@ This repository has reused code from ForwardTacotron (majority), Tacotron, WaveG
 
 # Supercomputer run
 
-1. Log in as instructed [here](https://documentation.sigma2.no/getting_started/getting_started.html).
-2. Run module load PyTorch/1.4.0-fosscuda-2019b-Python-3.7.4 
-3. mkdir (your project folder)
-4. You can now put your code and data in (your project folder) -- e.g. `git clone` or upload (like Transmit) or scp (`scp -r [your things] user@saga.sigma2.no:/the/path/to/the/shared/place`)
-5. Make virtual env `python3 -m venv env` and ACTIVATE!
-6. `pip install [your requirements.txt`]` (torch shoudn't be in requirements).
-7. Do some edits if you need (if you need to test your code). Nothing that requires cuda would work here. Only text cleaning and similar tasks. 
-8. Create a file like `run_training.sh` - more [here](https://documentation.sigma2.no/getting_started/tutorials/gpu.html)
-9. Exit your venv `deactivate` (important).
-10. `sbatch [your shell script]` will qeueu your task and run.
+1. Log in as instructed [here](https://documentation.sigma2.no/getting_started/getting_started.html). 
+2. Go to `~/cluster/projects/nn9866k/`
+3. Run `module load PyTorch/1.4.0-fosscuda-2019b-Python-3.7.4 `
+4. mkdir (your project folder)
+5. You can now put your code and data in (your project folder) -- e.g. `git clone` or upload (like Transmit) or scp (`scp -r [your things] user@saga.sigma2.no:/the/path/to/the/shared/place`)
+6. Make virtual env `python3 -m venv env` and ACTIVATE!
+7. `pip install [your requirements.txt`]` (torch shoudn't be in requirements).
+8. Do some edits if you need (if you need to test your code). Nothing that requires cuda would work here. Only text cleaning and similar tasks. 
+9. Create a file like `run_training.sh` - more [here](https://documentation.sigma2.no/getting_started/tutorials/gpu.html)
+10. Exit your venv `deactivate` (important).
+11. `sbatch [your shell script]` will qeueu your task and run.
