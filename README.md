@@ -39,4 +39,4 @@ This repository has reused code from ForwardTacotron (majority), Tacotron, WaveG
 6. `pip install [your requirements.txt`]` (torch shoudn't be in requirements).
 7. Do some edits if you need (if you need to test your code). Nothing that requires cuda would work here. Only text cleaning and similar tasks. 
 8. Create a file like `run_training.sh` - more [here](https://documentation.sigma2.no/getting_started/tutorials/gpu.html)
-10. `sbatch [your shell script]` will qeueu your task and run.
+10. `sbatch [your shell script]` will qeueu your task and run. (see more details [here](https://documentation.sigma2.no/jobs/guides/tensorflow_gpu.html))
