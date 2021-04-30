@@ -14,7 +14,7 @@ set -o nounset  # Treat any unset variables as an error
 module --quiet purge  # Reset the modules to the system default
 module load PyTorch/1.4.0-fosscuda-2019b-Python-3.7.4
 module list
-
+source $SLURM_SUBMIT_DIR/env/bin/activate
 # Setup monitoring
 nvidia-smi --query-gpu=timestamp,utilization.gpu,utilization.memory \
 	--format=csv --loop=1 > "gpu_util-$SLURM_JOB_ID.csv" &
