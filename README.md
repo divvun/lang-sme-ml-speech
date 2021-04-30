@@ -15,9 +15,11 @@ We need two copies of data! The data repo is private, you need to have access. T
 
 3. `cd ..` and run `python preprocess.py`, then `python train_tacotron.py --force_align` and `python process_for_asr.py` - these will finish data prep for tts and asr.
  
-4. If everything worked out fine with the previous steps, you can now start the common training of TTS and ASR with `python train_forward.py`. Note, the common training was not testet because of cuda OOM, but each function inside it was tested. 
+4. Preptrained models (more of them) necessary for this run are [here](https://drive.google.com/drive/folders/18nTVbsUlkbN4duvcbIeSS_gNsmG5bOiZ?usp=sharing). Place the folder (don't rename) `checkpoint-27363` that you dowloaded in `asr_output/` AND in  `checkpoints/sme_speech_tts.asr_forward/` (make a new dir in `checkpoints/`).
 
-5. Preptrained models (more of them) necessary for this run are [here](https://drive.google.com/drive/folders/18nTVbsUlkbN4duvcbIeSS_gNsmG5bOiZ?usp=sharing). Place the folder (don't rename) `checkpoint-27363` that you dowloaded in `asr_output/` AND in  `checkpoints/sme_speech_tts.asr_forward/` (make a new dir in `checkpoints/`).
+## Training
+
+If everything worked out fine with the previous steps, you can now start the common training of TTS and ASR with `python train_forward.py`. Note, the common training was not testet because of cuda OOM, but each function inside it was tested. 
 
 
 Further instructions on inference TBD.
