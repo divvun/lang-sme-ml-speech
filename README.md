@@ -37,7 +37,7 @@ This repository has reused code from ForwardTacotron (majority), Tacotron, WaveG
 5. Run `module load PyTorch/1.4.0-fosscuda-2019b-Python-3.7.4 `
 7. You can now put your code and data in [your project folder] -- e.g. `git clone` or upload (like Transmit) or scp (`scp -r [your things] user@saga.sigma2.no:/the/path/to/the/shared/place`)
 8. Make virtual env `python3 -m venv env` and ACTIVATE!
-9. `pip install [your requirements.txt`]` (torch shoudn't be in requirements).
+9. `pip install [your requirements.txt]`.
 10. Do some edits if you need (if you need to test your code). Nothing that requires cuda would work here. Only text cleaning and similar tasks. 
 11. Create a file like `run_training.sh` - more [here](https://documentation.sigma2.no/getting_started/tutorials/gpu.html)
 12. Exit your venv `deactivate` (important!).
