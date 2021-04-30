@@ -2,7 +2,7 @@
 # How to run
 
 ## Data preparation:
-1. You need to clone the data repo TWICE (we need to keep two copies of data as we will do different things with it)! The data repo is private, you need to have access. The fisrt data folder (first clone) should be renamed to `data/speech-sme-tts` and the second one - `data/speech-sme-asr`. You also need sme-freecorpus.txt to be in home dir. 
+1. You need to clone the data repo `cd data/`, `git clone git@github.com:giellalt/speech-sme.git speech-sme-tts` and then `cd -r speech-sme-tts speech-sme-asr`. We need two copies of data! The data repo is private, you need to have access. The fisrt data folder (first clone) should be renamed to `data/speech-sme-tts` and the second one - `data/speech-sme-asr`. You also need sme-freecorpus.txt to be in home dir. 
 
 2. `cd data/` and run `python preprocess_asr_tts.py`. This will take some time. It will write the training files, split them and resample data for TTS and ASR tasks. 
 
