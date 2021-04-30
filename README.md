@@ -41,4 +41,4 @@ This repository has reused code from ForwardTacotron (majority), Tacotron, WaveG
 10. Do some edits if you need (if you need to test your code). Nothing that requires cuda would work here. Only text cleaning and similar tasks. 
 11. Create a file like `run_training.sh` - more [here](https://documentation.sigma2.no/getting_started/tutorials/gpu.html)
 12. Exit your venv `deactivate` (important).
-13. `sbatch [your shell script]` will qeueu your task and run.
+13. `sbatch [your shell script]` will queue your task and run.
