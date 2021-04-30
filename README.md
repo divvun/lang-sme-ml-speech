@@ -13,6 +13,7 @@ We need two copies of data! The data repo is private, you need to have access. T
 
 2. You still should be in `data/` . Run `python preprocess_asr_tts.py`. This will take some time. It will write the training files, split them and resample data for TTS and ASR tasks. 
 
+
 3. `cd ..` and run `python preprocess.py`, then `python train_tacotron.py --force_align` and `python process_for_asr.py` - these will finish data prep for tts and asr.
  
 4. Preptrained models (more of them) necessary for this run are [here](https://drive.google.com/drive/folders/18nTVbsUlkbN4duvcbIeSS_gNsmG5bOiZ?usp=sharing). Place the folder (don't rename) `checkpoint-27363` that you dowloaded in `asr_output/` AND in  `checkpoints/sme_speech_tts.asr_forward/` (make a new dir in `checkpoints/`).
@@ -28,6 +29,15 @@ This repository has reused code from ForwardTacotron (majority), Tacotron, WaveG
 
 
 
+# Supercomputer run
 
-
-
+1. Log in as instructed [here](https://documentation.sigma2.no/getting_started/getting_started.html).
+2. Run module load PyTorch/1.4.0-fosscuda-2019b-Python-3.7.4 
+3. mkdir (your project folder)
+4. You can now put your code and data in (your project folder) -- e.g. `git clone` or upload (like Transmit) or scp (`scp -r [your things] user@saga.sigma2.no:/the/path/to/the/shared/place`)
+5. Make virtual env `python3 -m venv env` and ACTIVATE!
+6. `pip install [your requirements.txt`]`
+7. Do some edits if you need (if you need to test your code). Nothing that requires cuda would work here. Only text cleaning and similar tasks. 
+8. Create a file like `run_training.sh` - more [here](https://documentation.sigma2.no/getting_started/tutorials/gpu.html)
+9. Exit your venv `deactivate` (important).
+10. `sbatch [your shell script]` will qeueu your task and run.
