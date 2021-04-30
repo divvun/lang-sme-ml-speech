@@ -4,7 +4,7 @@
 ## Data preparation:
 1. You need to clone the data repo `cd data/`, `git clone git@github.com:giellalt/speech-sme.git speech-sme-tts` and then `cd -r speech-sme-tts speech-sme-asr`. We need two copies of data! The data repo is private, you need to have access. The fisrt data folder (first clone) should be renamed to `data/speech-sme-tts` and the second one - `data/speech-sme-asr`. You also need sme-freecorpus.txt to be in home dir. 
 
-2. `cd data/` and run `python preprocess_asr_tts.py`. This will take some time. It will write the training files, split them and resample data for TTS and ASR tasks. 
+2. You still should be in `data/` . Run `python preprocess_asr_tts.py`. This will take some time. It will write the training files, split them and resample data for TTS and ASR tasks. 
 
 3. `cd ..` and run `python preprocess.py`, then `python train_tacotron.py --force_align` and `python process_for_asr.py` - these will finish data prep for tts and asr.
  
