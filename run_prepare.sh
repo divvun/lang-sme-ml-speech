@@ -3,7 +3,6 @@
 #SBATCH --account=nn9866k
 #SBATCH --time=00:05:00
 #SBATCH --mem-per-cpu=512M
-#SBATCH --qos=devel
 #SBATCH --partition=accel
 #SBATCH --gres=gpu:1
 
@@ -13,6 +12,11 @@ set -o nounset  # Treat any unset variables as an error
 
 module --quiet purge  # Reset the modules to the system default
 module load PyTorch/1.4.0-fosscuda-2019b-Python-3.7.4
+
+# We got all the dependencies loaded for PyTorch but we don't want this version
+# so unload it.
+module unload PyTorch/1.4.0-fosscuda-2019b-Python-3.7.4
+
 module list
 source $SLURM_SUBMIT_DIR/env/bin/activate
 # Setup monitoring
