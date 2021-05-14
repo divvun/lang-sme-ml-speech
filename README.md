@@ -42,4 +42,4 @@ This repository has reused code from ForwardTacotron (majority), Tacotron, WaveG
 10. Do some edits if you need (if you need to test your code). Nothing that requires cuda would work here. Only text cleaning and similar tasks. 
 11. Deactivate env.
 12. Create a file like `run_training.sh` - more [here](https://documentation.sigma2.no/getting_started/tutorials/gpu.html)
-13. `sbatch [your shell script]` will queue your task and run.
+13. `sbatch [your shell script]` will queue your task and run. You will see the running output in a file {job_id}.out, but please note, it will take a while before you see the first print statement. They arrive in batches (e.g. after epoch is finished, you will see the prining). To see if the training is going, you can monitor .csv file with gpu usage stats. 
