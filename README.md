@@ -14,9 +14,10 @@ We need two copies of data! The data repo is private, you need to have access. T
 2. You still should be in `data/` . Run `python preprocess_asr_tts.py`. This will take some time. It will write the training files, split them and resample data for TTS and ASR tasks. 
 
 
-3. `cd ..` and run `python preprocess.py`, then `python train_tacotron.py --force_align` and `python process_for_asr.py` - these will finish data prep for tts and asr.
+3. `cd ..` and run `python preprocess.py`, then `python train_tacotron.py --force_align` and `python process_for_asr.py` (requires a lot of RAM) - these will finish data prep for tts and asr.
  
-4. Preptrained models (more of them) necessary for this run are [here](https://drive.google.com/drive/folders/18nTVbsUlkbN4duvcbIeSS_gNsmG5bOiZ?usp=sharing). Place the folder (don't rename) `checkpoint-27363` that you dowloaded in `asr_output/` AND in  `checkpoints/sme_speech_tts.asr_forward/` (make a new dir in `checkpoints/`).
+4. Preptrained models are [here](https://drive.google.com/drive/folders/18nTVbsUlkbN4duvcbIeSS_gNsmG5bOiZ?usp=sharing). Place the folder (don't rename) `checkpoint-27363` that you dowloaded in `asr_output/` AND in  `checkpoints/sme_speech_tts.asr_forward/` (make a new dir in `checkpoints/`). Place the files from `tacotron` in `checkpoints/sme_speech_tts.tacotron/`, and from `forward_tacotron` in `checkpoints/sme_speech_tts.forward/`.
+Put `chekpoint_14000_st` in `waveglow/` folder.
 
 ## Training
 
