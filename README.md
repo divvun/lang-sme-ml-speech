@@ -26,7 +26,10 @@ If everything worked out fine with the previous steps, you can now start the com
 Further instructions on inference TBD.
 This repository has reused code from ForwardTacotron (majority), Tacotron, WaveGlow and Huggingface (links and references to be added).
 
+## Inference
 
+When you run `bash run_forward_inf` this will generate audio in `audio` folder from sentences.txt.
+Run `predict.py` to inference with ASR model.
 
 
 # Supercomputer run
