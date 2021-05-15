@@ -31,7 +31,7 @@ def main():
     #     # exit()
     test = read_txt('./data/speech-sme-asr/test_asr.txt')
     processor = Wav2Vec2Processor.from_pretrained('./asr_output/pretrained_processor')
-    model = Wav2Vec2ForCTC.from_pretrained("./checkpoints/sme_speech_tts.asr_forward/checkpoint-27364").to('cpu')
+    model = Wav2Vec2ForCTC.from_pretrained("./checkpoints/sme_speech_tts.asr_forward/checkpoint-27363").to('cpu')
     # print(model)
     # exit()
     # resampler = torchaudio.transforms.Resample(48_000, 16_000)

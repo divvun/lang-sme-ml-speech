@@ -144,7 +144,7 @@ class ForwardTrainer:
         device = next(model_tts.parameters()).device  # use same device as model parameters
         warnings.filterwarnings('ignore', category=UserWarning)
         for e in range(1, epochs + 1):
-
+            
             #tts train loop for epoch
             for i, (x, m, ids, x_lens, mel_lens, dur) in enumerate(tts_session.train_set, 1):
                 start = time.time()
@@ -178,19 +178,19 @@ class ForwardTrainer:
                       f'| Dur Loss: {dur_loss_avg.get():#.4} ' \
                       f'| {speed:#.2} steps/s | Step: {k}k | '
 
-                # if step % hp.forward_checkpoint_every == 0:
-                #     ckpt_name = f'forward_step{k}K'
-                #     save_checkpoint('forward', self.paths, model_tts, optimizer_tts,
-                #                     name=ckpt_name, is_silent=True)
+                if step % hp.forward_checkpoint_every == 0:
+                    ckpt_name = f'forward_step{k}K'
+                    save_checkpoint('forward', self.paths, model_tts, optimizer_tts,
+                                    name=ckpt_name, is_silent=True)
 
-                # if step % hp.forward_plot_every == 0:
+                if step % hp.forward_plot_every == 0:
 
-                #     self.generate_plots(model_tts, tts_session)
+                    self.generate_plots(model_tts, tts_session)
 
-                # self.writer.add_scalar('Mel_Loss/train', m1_loss + m2_loss, model_tts.get_step())
-                # self.writer.add_scalar('Duration_Loss/train', dur_loss, model_tts.get_step())
-                # self.writer.add_scalar('Params/batch_size', tts_session.bs, model_tts.get_step())
-                # self.writer.add_scalar('Params/learning_rate', tts_session.lr, model_tts.get_step())
+                self.writer.add_scalar('Mel_Loss/train', m1_loss + m2_loss, model_tts.get_step())
+                self.writer.add_scalar('Duration_Loss/train', dur_loss, model_tts.get_step())
+                self.writer.add_scalar('Params/batch_size', tts_session.bs, model_tts.get_step())
+                self.writer.add_scalar('Params/learning_rate', tts_session.lr, model_tts.get_step())
 
 
                 stream(msg_tts)
@@ -275,18 +275,8 @@ class ForwardTrainer:
             
             torch.save(optimizer_asr.state_dict(), f'{new_check}/optimizer.pt')
 
-            for f in sorted(os.listdir(modelasr_folder)):
-                content = os.listdir(modelasr_folder)
-                # print(content)
-                file_path = os.path.join(asr_path, f)
-                checkpoints_count = []
-                if f.startswith('checkpoint-'):
-                    checkpoints_count.append(f)
-                    if len(checkpoints_count) > 3:
-                        if file_path != 'checkpoint-27363':
-                            os.unlink(file_path)
-                            print('Deleted old checkpoints at step {step}!')
-
+            print("Exiting due to cuda OOM!")
+            exit(11)
 
     def dual_transform(self, model_tts, model_asr, optimizer_tts, optimizer_asr, asr_test_set, m_loss_avg, dur_loss_avg, device, asr_current_step, e, epochs, duration_avg, total_iters, tts_s_loss, asr_s_loss, tts_lr, tts_dt_path):
             print('\n\nStarting DualTransformation loop...\n')
@@ -451,9 +441,9 @@ class ForwardTrainer:
 
         # self.writer.add_figure('Pitch/target', pitch_fig, model.step)
         # self.writer.add_figure('Pitch/ground_truth_aligned', pitch_gta_fig, model.step)
-        # self.writer.add_figure('Ground_Truth_Aligned/target', m_fig, model.step)
-        # self.writer.add_figure('Ground_Truth_Aligned/linear', m1_hat_fig, model.step)
-        # self.writer.add_figure('Ground_Truth_Aligned/postnet', m2_hat_fig, model.step)
+        self.writer.add_figure('Ground_Truth_Aligned/target', m_fig, model.step)
+        self.writer.add_figure('Ground_Truth_Aligned/linear', m1_hat_fig, model.step)
+        self.writer.add_figure('Ground_Truth_Aligned/postnet', m2_hat_fig, model.step)
 
         m2_hat_wav = reconstruct_waveform(m2_hat)
         target_wav = reconstruct_waveform(m)
@@ -472,14 +462,14 @@ class ForwardTrainer:
         # pitch_gen_fig = plot_pitch(np_now(pitch_hat.squeeze()))
 
         # self.writer.add_figure('Pitch/generated', pitch_gen_fig, model.step)
-        # self.writer.add_figure('Generated/target', m_fig, model.step)
-        # self.writer.add_figure('Generated/linear', m1_hat_fig, model.step)
-        # self.writer.add_figure('Generated/postnet', m2_hat_fig, model.step)
+        self.writer.add_figure('Generated/target', m_fig, model.step)
+        self.writer.add_figure('Generated/linear', m1_hat_fig, model.step)
+        self.writer.add_figure('Generated/postnet', m2_hat_fig, model.step)
 
         m2_hat_wav = reconstruct_waveform(m2_hat)
-        # self.writer.add_audio(
-        #     tag='Generated/target_wav', snd_tensor=target_wav,
-        #     global_step=model.step, sample_rate=hp.sample_rate)
-        # self.writer.add_audio(
-        #     tag='Generated/postnet_wav', snd_tensor=m2_hat_wav,
-        #     global_step=model.step, sample_rate=hp.sample_rate)
+        self.writer.add_audio(
+            tag='Generated/target_wav', snd_tensor=target_wav,
+            global_step=model.step, sample_rate=hp.sample_rate)
+        self.writer.add_audio(
+            tag='Generated/postnet_wav', snd_tensor=m2_hat_wav,
+            global_step=model.step, sample_rate=hp.sample_rate)
