@@ -129,15 +129,15 @@ def prepare(reg=True, from_scratch=False):
     test = test.map(speech_file_to_array_fn, remove_columns=test.column_names)
 
     print("Preparing train dataset")
-    train = train.map(prepare_dataset, remove_columns=train.column_names, batch_size=1, num_proc=4, batched=True)
+    train = train.map(prepare_dataset, remove_columns=train.column_names, batch_size=1, num_proc=1, batched=True)
     print("Preparing test dataset")
-    test = test.map(prepare_dataset, remove_columns=test.column_names, batch_size=1, num_proc=4, batched=True)
+    test = test.map(prepare_dataset, remove_columns=test.column_names, batch_size=1, num_proc=1, batched=True)
     print("Done")
     
     pickle.dump(train,open('./data/speech-sme-asr/train_asr.pkl', 'wb'))
 
     pickle.dump(test, open('./data/speech-sme-asr/test_asr.pkl', 'wb') )
-    #     processor.save_pretrained('model_output/')
+
     return train, test
 
 if __name__ == '__main__':

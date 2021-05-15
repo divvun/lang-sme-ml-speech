@@ -9,8 +9,8 @@ import argparse
 from utils.text import text_to_sequence, clean_text
 from utils.display import simple_table
 from utils.dsp import reconstruct_waveform, save_wav
+from waveglow.inference import waveglow_generate
 # from notebook_utils.synthesize import synthesize, get_melgan_model
-from inference_mel import inference_mel
 
 if __name__ == '__main__':
 
@@ -38,15 +38,15 @@ if __name__ == '__main__':
     wr_parser.add_argument('--voc_weights', type=str, help='[string/path] Load in different WaveRNN weights')
     wr_parser.set_defaults(batched=None)
 
-    gl_parser = subparsers.add_parser('griffinlim', aliases=['gl'])
-    gl_parser.add_argument('--iters', type=int, default=32, help='[int] number of griffinlim iterations')
+    gl_parser = subparsers.add_parser('waveglow', aliases=['gl'])
+    gl_parser.add_argument('--iters', type=int, default=32, help='[int] number of waveglow iterations')
 
     mg_parser = subparsers.add_parser('melgan', aliases=['mg'])
 
     args = parser.parse_args()
 
-    if args.vocoder in ['griffinlim', 'gl']:
-        args.vocoder = 'griffinlim'
+    if args.vocoder in ['waveglow', 'gl']:
+        args.vocoder = 'waveglow'
     elif args.vocoder in ['wavernn', 'wr']:
         args.vocoder = 'wavernn'
     elif args.vocoder in ['melgan', 'mg']:
@@ -120,6 +120,7 @@ if __name__ == '__main__':
                                 n_mels=hp.num_mels).to(device)
 
     tts_load_path = tts_weights if tts_weights else paths.forward_latest_weights
+    # tts_model.load('./checkpoints/sme_speech_tts.forward/latest_weights_trained.pyt')
     tts_model.load(tts_load_path)
 
     if input_text:
@@ -127,8 +128,10 @@ if __name__ == '__main__':
         inputs = [text_to_sequence(text)]
     else:
         with open('sentences.txt') as f:
-            inputs = [clean_text(l.strip()) for l in f]
-        inputs = [text_to_sequence(t) for t in inputs]
+            inputs_raw = [clean_text(l.strip()) for l in f]
+        inputs = [text_to_sequence(t) for t in inputs_raw]
+        
+
 
     tts_k = tts_model.get_step() // 1000
 
@@ -141,10 +144,10 @@ if __name__ == '__main__':
                     ('Target Samples', target if batched else 'N/A'),
                     ('Overlap Samples', overlap if batched else 'N/A')])
 
-    elif args.vocoder == 'griffinlim':
+    elif args.vocoder == 'waveglow':
         simple_table([('Forward Tacotron', str(tts_k) + 'k'),
-                      ('Vocoder Type', 'Griffin-Lim'),
-                      ('GL Iters', args.iters)])
+                      ('Vocoder Type', 'WaveGlow'),
+                    ])
 
     elif args.vocoder == 'melgan':
         simple_table([('Forward Tacotron', str(tts_k) + 'k'),
@@ -158,7 +161,7 @@ if __name__ == '__main__':
         print(f'\n| Generating {i}/{len(inputs)}')
         _, m, dur = tts_model.generate(x, alpha=args.alpha)
 
-        if args.vocoder == 'griffinlim':
+        if args.vocoder == 'waveglow':
             v_type = args.vocoder
         elif args.vocoder == 'wavernn' and args.batched:
             v_type = 'wavernn_batched'
@@ -180,9 +183,13 @@ if __name__ == '__main__':
             print(save_path)
             torch.save(m, save_path)
             # inference_mel(save_path)
-        elif args.vocoder == 'griffinlim':
-            wav = reconstruct_waveform(m, n_iter=args.iters)
-            save_wav(wav, save_path)
-            print('saved at: ', save_path)
+        elif args.vocoder == 'waveglow':
+            m = torch.tensor(m).unsqueeze(0)
+            # save_path = paths.forward_output/f'{i}_amp.mel'
+            # print(save_path)
+            # torch.save(m, save_path)
+            waveglow_generate(m, inputs_raw[i-1], tts_k)
+            # save_wav(wav, save_path)
+            # print('saved at: ', save_path)
 
     print('\n\nDone.\n')

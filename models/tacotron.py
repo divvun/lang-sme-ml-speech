@@ -446,6 +446,8 @@ class Tacotron(nn.Module):
     def load(self, path: Union[str, Path]):
         # Use device of model params as location for loaded state
         device = next(self.parameters()).device
+        # print(path)
+        path=str(path)
         state_dict = torch.load(path, map_location=device)
 
         # Backwards compatibility with old saved models

@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Optional, Union
 
 import torch.nn.functional as F
 from torch.utils.data.dataloader import DataLoader
-from torch.cuda.amp import autocast
+# from torch.cuda.amp import autocast
 
 # import warnings
 from transformers import Trainer, TrainingArguments,Wav2Vec2ForCTC
@@ -49,7 +49,7 @@ def load_dt_data(data):
         batch["target_text"] = batch["sentence"]
         return batch
     def resample(batch):
-        batch["speech"] = librosa.resample(np.asarray(batch["speech"]), 48_000, 16_000)
+        batch["speech"] = librosa.resample(np.asarray(batch["speech"]), 22_050, 16_000)
         batch["sampling_rate"] = 16_000
         return batch
 
@@ -85,8 +85,9 @@ def asr_predict_for_dt(model):
     # model = Wav2Vec2ForCTC.from_pretrained('./asr_output/checkpoint-27363')
     model.to('cuda')
 
-    resampler = torchaudio.transforms.Resample(48_000, 16_000)
+    resampler = torchaudio.transforms.Resample(new_freq=16_000)
     def speech_file_to_array_fn(batch):
+        # print(batch['path'])
         speech_array, sampling_rate = torchaudio.load('./data/'+ batch["path"])
         batch["speech"] = resampler(speech_array).squeeze().numpy()
         return batch
@@ -94,8 +95,7 @@ def asr_predict_for_dt(model):
     asr_test = asr_test.map(speech_file_to_array_fn)
     input_dict = asr_pr(asr_test['speech'], sampling_rate=16000, return_tensors="pt", padding=True).to('cuda')
     with torch.no_grad():
-        logits = model(input_dict.input_values.to("cuda")).logits
-
+        logits = model(input_dict.input_values.to('cuda')).logits
 
     predicted_ids = torch.argmax(logits, dim=-1)
     preds = asr_pr.batch_decode(predicted_ids)
@@ -104,12 +104,12 @@ def asr_predict_for_dt(model):
     lines = []
     for path, pred in zip(paths, preds):
         # print(pred)
-        
         lines.append(path.split('/')[-1].split('.')[0] + '|' + pred+'\n')
     # print(lines)
     with open('./data/speech-sme-tts/tmp_tts_train.csv', 'w') as f:
         print("writing dt training file...")
         f.writelines(lines)
+    # model.to('cuda')
 
 class CustomTrainer(Trainer):
     def training_step(self, model: nn.Module, inputs: Dict[str, Union[torch.Tensor, Any]]) -> torch.Tensor:
@@ -130,11 +130,11 @@ class CustomTrainer(Trainer):
         model.train()
         inputs = self._prepare_inputs(inputs)
 
-        if self.use_amp:
-            with autocast():
-                loss = self.compute_loss(model, inputs)
-        else:
-            loss = self.compute_loss(model, inputs)
+        # if self.use_amp:
+        #     with autocast():
+        #         loss = self.compute_loss(model, inputs)
+        # else:
+        loss = self.compute_loss(model, inputs)
 
         if self.args.n_gpu > 1:
             if model.module.config.ctc_loss_reduction == "mean":
@@ -227,6 +227,7 @@ wer_metric = load_metric("wer")
 
 def compute_metrics(pred):
     pred_logits = pred.predictions
+    pred_logits = pred_logits.cpu()
     pred_ids = np.argmax(pred_logits, axis=-1)
 
     pred.label_ids[pred.label_ids == -100] = processor.tokenizer.pad_token_id
@@ -241,13 +242,12 @@ def compute_metrics(pred):
 
 training_args = TrainingArguments(
         output_dir="model_output/",
-        # output_dir="./wav2vec2-large-xlsr-turkish-demo",
-        group_by_length=True,
+        # group_by_length=True,
         per_device_train_batch_size=8,
         gradient_accumulation_steps=2,
         evaluation_strategy="steps",
         num_train_epochs=30,
-        fp16=True,
+        # fp16=True,
         save_steps=100,
         eval_steps=500,
         logging_steps=500,

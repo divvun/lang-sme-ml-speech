@@ -45,13 +45,13 @@ def read_desc_txt(path):
 
     return ' '.join(words)
 
-def convert_docx(path):
-    words = []
-    text = docx2txt.process(path)
-    contents = text.split('\n')
-    for line in contents:
-        words.append(line.rstrip())
-    return ' '.join(words)
+# def convert_docx(path):
+#     words = []
+#     text = docx2txt.process(path)
+#     contents = text.split('\n')
+#     for line in contents:
+#         words.append(line.rstrip())
+#     return ' '.join(words)
     # print(text)
     # extract text and write images in /tmp/img_dir
     # text = docx2txt.process("file.docx", "/tmp/img_dir")
