@@ -1,5 +1,6 @@
 
 # How to run
+This repository has reused code from ForwardTacotron (majority), Tacotron, WaveGlow and Huggingface (links and references to be added).
 
 ## Data preparation:
 1. You need to clone the data repo 
@@ -16,17 +17,13 @@ We need two copies of data! The data repo is private, you need to have access. T
 
 3. `cd ..` and run `python preprocess.py`, then `python train_tacotron.py --force_align` and `python process_for_asr.py` (requires a lot of RAM) - these will finish data prep for tts and asr. If you cannot run `python process_for_asr.py` you can download pickled dataset from  [here](https://drive.google.com/drive/folders/18nTVbsUlkbN4duvcbIeSS_gNsmG5bOiZ?usp=sharing).
  
-4. Preptrained models are [here](https://drive.google.com/drive/folders/18nTVbsUlkbN4duvcbIeSS_gNsmG5bOiZ?usp=sharing). Place the folder (don't rename) `checkpoint-27363` that you dowloaded in `asr_output/` AND in  `checkpoints/sme_speech_tts.asr_forward/` (make a new dir in `checkpoints/`). Place the files from `tacotron` in `checkpoints/sme_speech_tts.tacotron/`, and from `forward_tacotron` in `checkpoints/sme_speech_tts.forward/`.
+4. Preptrained models are [here](https://drive.google.com/drive/folders/18nTVbsUlkbN4duvcbIeSS_gNsmG5bOiZ?usp=sharing). Place the folder (don't rename) `checkpoint-27363` that you dowloaded in `asr_output/` AND in  `checkpoints/sme_speech_tts.asr_forward/` (make a new dir in `checkpoints/`). Place the files from `tacotron` in `checkpoints/sme_speech_tts.tacotron/`. If you want to run inference, you need to put files from `forward_tacotron` in `checkpoints/sme_speech_tts.forward/`.
 Put `waveglow_14000_st` in `waveglow/` folder.
 `sme-freecorpus.txt` should be in home dir. 
 
 ## Training
 
-If everything worked out fine with the previous steps, you can now start the common training of TTS and ASR with `python train_forward.py`. Note, the common training was not testet because of cuda OOM, but each function inside it was tested. 
-
-
-Further instructions on inference TBD.
-This repository has reused code from ForwardTacotron (majority), Tacotron, WaveGlow and Huggingface (links and references to be added).
+If everything worked out fine with the previous steps, you can now start the common training of TTS and ASR with `python train_forward.py`. This repo is setup for inference, so if you want to train the models, you need to do a bit extra work. You need `forward_tacotron/forward_step430K_weights.pyt` &`forward_tacotron/forward_step_430K_optim.pyt`. Change the paths in `utils/paths.py` respectively.
 
 ## Inference
 

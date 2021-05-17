@@ -251,7 +251,7 @@ class ForwardTrainer:
             # asr_s_loss = 1
             tts_u_loss, asr_u_loss = self.dual_transform(model_tts, model_asr, optimizer_tts, optimizer_asr, asr_session.test_set, m_loss_avg, dur_loss_avg, device, asr_current_step, e, epochs, duration_avg, total_iters, tts_s_loss, asr_s_loss, tts_session.lr, tts_session.path)
             step += 1
-            asr_path = f'checkpoint-{step}'
+            asr_path = f'checkpoint-27364'
             modelasr_folder = './checkpoints/sme_speech_tts.asr_forward/'
             new_check = modelasr_folder + asr_path
             os.makedirs(new_check, exist_ok=True)
@@ -290,6 +290,7 @@ class ForwardTrainer:
             print('\n\nStarting DualTransformation loop...\n')
             # exit()
             tmp_dir = './checkpoints/sme_speech_tts.asr_forward/dual_transform_tmp'
+            os.makedirs(tmp_dir, exist_ok=True)
             # generate tmp ASR training data
             asr_train_data = []
             input_set = get_unpaired_txt(35)
@@ -388,7 +389,7 @@ class ForwardTrainer:
             combined_loss = 0.5 * (tts_s_loss + asr_s_loss) + (tts_u_loss + asr_u_loss)
             # backwards
             combined_loss.to(device)
-            print(combined_loss)
+            # print(combined_loss)
             combined_loss.backward()
             optimizer_tts.step()
 
