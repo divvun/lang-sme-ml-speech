@@ -14,7 +14,7 @@ from sys import path
 import time
 from utils.files import pickle_binary, unpickle_binary
 from utils.text import clean_text, text_to_sequence
-from transformers import Wav2Vec2Processor, AdamW
+from transformers import Wav2Vec2Processor, AdamW, EvalPrediction
 from torch.utils.data.dataloader import DataLoader
 # from transformers import trainer
 # from transformers.trainer_utils import get_last_checkpoint
@@ -230,10 +230,18 @@ class ForwardTrainer:
             # ASR eval supervised 
             print('\nEvaluating ASR model ...')
             # model_asr.to('cpu')
-            eval_output = asr_trainer.prediction_loop(asr_session.test_set, "Prediction", metric_key_prefix='eval')
+            asr_eval_loss = 0
+            eval_wer = 0
 
-            asr_eval_loss = eval_output.metrics['eval_loss']
-            eval_wer = eval_output.metrics['eval_wer']
+            for step, inputs in enumerate(asr_session.test_set):
+                asr_eval_loss_i, logits_a, labels_a = asr_trainer.prediction_step(model_asr, inputs, False)
+                asr_eval_loss += asr_eval_loss_i
+                logits_a.to('cpu')
+                eval_wer_i = asr_trainer.compute_metrics(EvalPrediction(predictions=logits_a, label_ids=labels_a))
+                eval_wer += eval_wer_i['wer']
+                # print(eval_wer)
+            eval_wer = eval_wer/step
+            asr_eval_loss = asr_eval_loss/step
             
             msg_asr_eval =   f'| ASR MODEL (supervised eval) : Epoch {e}/{epochs} | Loss ASR: {asr_eval_loss:#.4} | WER: {eval_wer} |||||||||||||||||||||||||||||||||||||||||||||||||||||'
             stream(msg_asr_eval)

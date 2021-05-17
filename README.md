@@ -18,6 +18,7 @@ We need two copies of data! The data repo is private, you need to have access. T
  
 4. Preptrained models are [here](https://drive.google.com/drive/folders/18nTVbsUlkbN4duvcbIeSS_gNsmG5bOiZ?usp=sharing). Place the folder (don't rename) `checkpoint-27363` that you dowloaded in `asr_output/` AND in  `checkpoints/sme_speech_tts.asr_forward/` (make a new dir in `checkpoints/`). Place the files from `tacotron` in `checkpoints/sme_speech_tts.tacotron/`, and from `forward_tacotron` in `checkpoints/sme_speech_tts.forward/`.
 Put `waveglow_14000_st` in `waveglow/` folder.
+`sme-freecorpus.txt` should be in home dir. 
 
 ## Training
 
