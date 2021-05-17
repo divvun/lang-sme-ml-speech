@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=TestGPUOnSaga
 #SBATCH --account=nn9866k
-#SBATCH --time=01:50:00
+#SBATCH --time=11:50:00
 #SBATCH --mem=16G
 #SBATCH --partition=accel
 #SBATCH --gres=gpu:1
