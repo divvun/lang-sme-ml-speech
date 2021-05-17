@@ -64,3 +64,4 @@ data/*
 !data/*.py
 model_outputs/*
 logs/*
+waveglow/waveglow_14000_st
