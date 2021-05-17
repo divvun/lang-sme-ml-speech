@@ -45,7 +45,7 @@ def split_for_dt():
         lines = f.readlines()
         dt_set = []
         for i, line in enumerate(lines):
-            if i < 100:
+            if i < 17:
                 dt_set.append(line)
     with open('speech-sme-asr/dt_set.txt', 'w') as f:
         f.write(''.join(dt_set))

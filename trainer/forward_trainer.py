@@ -284,7 +284,7 @@ class ForwardTrainer:
             tmp_dir = './checkpoints/sme_speech_tts.asr_forward/dual_transform_tmp'
             # generate tmp ASR training data
             asr_train_data = []
-            input_set = get_unpaired_txt(99)
+            input_set = get_unpaired_txt(35)
             # print(input_set)
             text = [clean_text(v) for v in input_set]
             inputs = [text_to_sequence(t) for t in text]
