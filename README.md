@@ -1,7 +1,10 @@
+# TTS and ASR for the North Sámi language
 
-# How to run
+This project presents a common training procedure for TTS and ASR models suitable for a low-resource setup. During this common training, we sequentially run supervised and unsupervised training, the models produce new unpaired data and 'learn from each other'. 
+
 This repository containes reused code from [ForwardTacotron](https://github.com/as-ideas/ForwardTacotron) (majority of the structure), [Tacotron2](https://github.com/NVIDIA/tacotron2), [WaveGlow](https://github.com/NVIDIA/waveglow/tree/5bc2a53e20b3b533362f974cfa1ea0267ae1c2b1) and Huggingface [tutorial](https://huggingface.co/blog/fine-tune-xlsr-wav2vec2) .
 
+## How to run
 The code runs with Python 3.8.8. We are working on compatibility between the verions (currently incompatible).
 
 ## Data preparation:   
