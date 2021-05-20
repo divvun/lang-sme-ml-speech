@@ -1,6 +1,6 @@
 
 # How to run
-This repository has reused code from ForwardTacotron (majority), Tacotron, WaveGlow and Huggingface (links and references to be added).
+This repository containes reused code from [ForwardTacotron](https://github.com/as-ideas/ForwardTacotron) (majority of the structure), [Tacotron2](https://github.com/NVIDIA/tacotron2), [WaveGlow](https://github.com/NVIDIA/waveglow/tree/5bc2a53e20b3b533362f974cfa1ea0267ae1c2b1) and Huggingface [tutorial](https://huggingface.co/blog/fine-tune-xlsr-wav2vec2) .
 
 ## Data preparation:
 1. You need to clone the data repo 
@@ -25,10 +25,15 @@ Put `waveglow_14000_st` in `waveglow/` folder.
 
 If everything worked out fine with the previous steps, you can now start the common training of TTS and ASR with `python train_forward.py`. This repo is setup for inference, so if you want to train the models, you need to do a bit extra work. You need `forward_tacotron/forward_step430K_weights.pyt` &`forward_tacotron/forward_step_430K_optim.pyt`. Change the paths in `utils/paths.py` respectively.
 
+Alternatively, with your own data, you need to repeat Data preparation steps with the tacotron model that you trained, for asr you would need to run `python process_for_asr.py --from_scratch`. This will create and save a new processor and vocab. 
+
+You would need you train ASR and TTS models without `dual_transformation` for around 500 steps for ASR and at least 300K for TTS. 
+
 ## Inference
 
-When you run `bash run_forward_inf` this will generate audio in `audio` folder from sentences.txt.
-Run `predict.py` to inference with ASR model.
+When you run `python gen_forward --alpha .95 waveglow` or `python gen_forward --alpha .95 griffinlim` this will generate audio in `audio` folder from sentences.txt. The vocoder would be waveglow (recommended) or griffinlim respectively. `--alpha` value (float) is responsible for teh speed of the audio. 
+
+ Run `predict.py` to inference with ASR model. This will both run WER calculation over the whole test set and will print out the predictions for the first 10 sentences in the dataset. 
 
 
 # Supercomputer run
