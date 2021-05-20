@@ -4,7 +4,7 @@ This repository containes reused code from [ForwardTacotron](https://github.com/
 
 The code runs with Python 3.8.8. We are working on compatibility between the verions (currently incompatible).
 
-## Data preparation:
+## Data preparation:   
 Install `requirements.txt`.   
 1. You need to clone the data repo 
 ```sh
