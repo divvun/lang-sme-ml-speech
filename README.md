@@ -2,7 +2,10 @@
 # How to run
 This repository containes reused code from [ForwardTacotron](https://github.com/as-ideas/ForwardTacotron) (majority of the structure), [Tacotron2](https://github.com/NVIDIA/tacotron2), [WaveGlow](https://github.com/NVIDIA/waveglow/tree/5bc2a53e20b3b533362f974cfa1ea0267ae1c2b1) and Huggingface [tutorial](https://huggingface.co/blog/fine-tune-xlsr-wav2vec2) .
 
+The code runs with Python 3.8.8. We are working on compatibility between the verions (currently incompatible).
+
 ## Data preparation:
+Install `requirements.txt`.   
 1. You need to clone the data repo 
 ```sh
 cd data/
