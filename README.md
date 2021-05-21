@@ -33,7 +33,7 @@ If everything worked out fine with the previous steps, you can now start the com
 
 Alternatively, with your own data, you need to repeat Data preparation steps with the tacotron model that you trained, for asr you would need to run `python process_for_asr.py --from_scratch`. This will create and save a new processor and vocab. 
 
-You would need you train ASR and TTS models without `dual_transformation` for around 500 steps for ASR and at least 300K for TTS. 
+You would need to train ASR and TTS models without `dual_transformation` for around 500 steps for ASR and at least 300K for TTS. 
 
 ## Inference
 
