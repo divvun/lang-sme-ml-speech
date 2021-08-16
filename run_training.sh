@@ -1,14 +1,14 @@
 #!/bin/bash
 #SBATCH --job-name=TestGPUOnSaga
 #SBATCH --account=nn9866k
-#SBATCH --time=11:50:00
+#SBATCH --time=48:50:00
 #SBATCH --mem=16G
 #SBATCH --partition=accel
 #SBATCH --gres=gpu:1
 
 ## Set up job environment:
-set -o errexit  # Exit the script on any error
-set -o nounset  # Treat any unset variables as an error
+# set -o errxexit  # Exit the script on any error
+# set -o nounset  # Treat any unset variables as an error
 
 module --quiet purge  # Reset the modules to the system default
 module load PyTorch/1.4.0-fosscuda-2019b-Python-3.7.4
@@ -25,7 +25,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/cluster/projects/nn9866k/extra/lib
 # Run our computation
 RET=1
 until [[ ${RET} -eq 0 ]]; do
-	python train_forward.py 
+	python train_forward.py
 	RET=$?
 	sleep 1
 done

@@ -1,4 +1,6 @@
+from pandas.io.parquet import read_parquet
 import torch
+from datasets import Dataset
 
 from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
 from dataclasses import dataclass, field
@@ -10,32 +12,40 @@ from transformers import TrainingArguments
 from transformers import Trainer
 import numpy as np
 import pickle
+import pandas as pd
+from pathlib import Path
+# import torchaudio
+# import tqdm
+# from multiprocessing import Pool
+
+
 
 # class CustomWav2Vec2Dataset(torch.utils.data.Dataset):
 
-#         def __init__(self, split='train'):
+#         def __init__(self, path):
 #             super().__init__()
-#             assert split in {'train', 'eval'}
-#             self.split = split
-#             self.path = Path(f'./{split}.parquet')
+#             # assert split in {'train', 'eval'}
+#             # self.split = split
+#             self.path = Path(f'{path}')
 #             df = pd.read_parquet(self.path)
+#             # print(df)
+#             # exit()
 #             self.labels = [x.tolist() for x in df['labels'].tolist()]
 #             self.paths = df['path'].tolist()
 #             self.max_input_length_quantile = .98
-#             self.max_input_length = None
-
-#             if split == 'train':
-#                 with Pool(training_args.dataloader_num_workers) as p:
-#                     self.input_seq_lengths = list(tqdm(p.imap(get_input_len, self.paths), total=len(self.paths), miniters=100, desc='getting train input lengths'))
-#                 self.max_input_length = torch.tensor(self.input_seq_lengths).float().quantile(self.max_input_length_quantile).int().item()
+        
+#             with Pool(4) as p:
+#                 print(tqdm(p.imap(get_input_len, self.paths)))
+#                 self.input_seq_lengths = list(tqdm(p.imap(get_input_len, self.paths), total=len(self.paths), miniters=100, desc='getting train input lengths'))
+#             self.max_input_length = torch.tensor(self.input_seq_lengths).float().quantile(self.max_input_length_quantile).int().item()
 
 #         def __len__(self):
 #             return len(self.paths)
 
 #         def __getitem__(self, idx):
 #             inputs = load_speech(self.paths[idx])
-#             if self.split == 'train':
-#                 inputs = inputs[:self.max_input_length]
+#             # if self.split == 'train':
+#             #     inputs = inputs[:self.max_input_length]
 #             label = self.labels[idx]
 #             return {'input_values': inputs, 'labels': label}
 
@@ -125,7 +135,7 @@ def train():
         return {"wer": wer}
 
     model = Wav2Vec2ForCTC.from_pretrained(
-        "asr_output/checkpoint-906",
+        "facebook/wav2vec2-large-xlsr-53",
         attention_dropout=0.1,
         hidden_dropout=0.1,
         feat_proj_dropout=0.0,
@@ -159,12 +169,18 @@ def train():
         warmup_steps=500,
         save_total_limit=2,
     )
+
+
     print("loading data...")
-    with open('./data/speech-sme-asr/train_asr.pkl', 'rb') as f:
-        train = pickle.load(f)
-    with open('./data/speech-sme-asr/test_asr.pkl', 'rb') as f:
-        test = pickle.load(f)
+  
+    train = pd.read_parquet('./data/speech-sme-asr/train_asr.parquet')
+    train = Dataset.from_pandas(train)
+    test = pd.read_parquet('./data/speech-sme-asr/test_asr.parquet')
+    test = Dataset.from_pandas(test)
     print('loaded...')
+    # print(train)
+    # exit()
+   
 
     trainer = Trainer(
         model=model,

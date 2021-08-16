@@ -51,6 +51,7 @@ if __name__ == '__main__':
     parser.add_argument('--force_gta', '-g', action='store_true', help='Force the model to create GTA features')
     parser.add_argument('--force_cpu', '-c', action='store_true', help='Forces CPU-only training, even when in CUDA capable environment')
     parser.add_argument('--hp_file', metavar='FILE', default='hparams.py', help='The file to use for the hyperparameters')
+    parser.add_argument('--from_empty', '-e', action='store_true', help='Forces the training from empty models')
     args = parser.parse_args()
 
     hp.configure(args.hp_file)  # Load hparams from file
@@ -106,23 +107,32 @@ if __name__ == '__main__':
     modelasr_name = 'checkpoint-'
 
 
-    model_to_load, step = get_last_checkpoint(modelasr_folder, modelasr_name)
-    asr_model = create_model(model_to_load)
+    if not args.from_empty: 
+        model_to_load, step = get_last_checkpoint(modelasr_folder, modelasr_name)
+        asr_model = create_model(model_to_load)
     # print(model_to_load)
-    if step == 27363:
+        if step == 27363:
   
-        print("Didn't find trained ASR models from DualTransformation training. Starting from the finetuned checkpoint...")
-    else:
-        print(f"Resuming ASR from step {step}...")
-  
-    # no_decay = ['bias', 'LayerNorm.weight']
+            print("Didn't find trained ASR models from DualTransformation training. Starting from the finetuned checkpoint...")
+        if step is not None:
+            print(f"Resuming ASR from step {step}...")
+    if args.from_empty:
+        print('Starting training from facebook checkpoint')
+        processor = Wav2Vec2Processor.from_pretrained('./asr_output/pretrained_processor')
 
-    # optimizer_grouped_parameters = [
-            # {'params': [p for n, p in asr_model.named_parameters() if not any(nd in n for nd in no_decay)], 'weight_decay': 0.01},
-            # {'params': [p for n, p in asr_model.named_parameters() if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}
-        # ]
-
-    # asr_model.to(device)
+        asr_model = Wav2Vec2ForCTC.from_pretrained(
+            "facebook/wav2vec2-large-xlsr-53",
+            attention_dropout=0.1,
+            hidden_dropout=0.1,
+            feat_proj_dropout=0.0,
+            mask_time_prob=0.05,
+            layerdrop=0.1,
+            gradient_checkpointing=True,
+            ctc_loss_reduction="mean",
+            pad_token_id=processor.tokenizer.pad_token_id,
+            vocab_size=len(processor.tokenizer)
+        )
+    
     optimizer_asr = AdamW(asr_model.parameters(), lr=1e-5)
     
             

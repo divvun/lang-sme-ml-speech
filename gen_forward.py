@@ -119,9 +119,9 @@ if __name__ == '__main__':
                                 dropout=hp.forward_dropout,
                                 n_mels=hp.num_mels).to(device)
 
-    tts_load_path = tts_weights if tts_weights else paths.forward_latest_weights
-    # tts_model.load('./checkpoints/sme_speech_tts.forward/latest_weights_trained.pyt')
-    tts_model.load(tts_load_path)
+    # tts_load_path = tts_weights if tts_weights else paths.forward_latest_weights
+    tts_model.load('./checkpoints/sme_speech_tts.forward/latest_weights_trained.pyt')
+    # tts_model.load(tts_load_path)
 
     if input_text:
         text = clean_text(input_text.strip())
@@ -188,7 +188,7 @@ if __name__ == '__main__':
             # save_path = paths.forward_output/f'{i}_amp.mel'
             # print(save_path)
             # torch.save(m, save_path)
-            waveglow_generate(m, inputs_raw[i-1], tts_k)
+            path =  waveglow_generate(m, inputs_raw[i-1], tts_k)
             # save_wav(wav, save_path)
             # print('saved at: ', save_path)
 

@@ -58,6 +58,7 @@ def waveglow_generate(mel_file, sentence, tts_k, waveglow_path='waveglow/waveglo
     print('Generating wav ...')
     write(audio_path, sampling_rate, audio)
     print('Saved at: ', audio_path)
+    return audio_path
 
 
 if __name__ == "__main__":

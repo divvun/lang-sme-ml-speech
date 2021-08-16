@@ -38,8 +38,8 @@ class Paths:
 
         # Forward Tacotron Paths
         self.forward_checkpoints = self.base/'checkpoints'/f'{tts_id}.forward'
-        self.forward_latest_weights = self.forward_checkpoints/'latest_weights.pyt'
-        self.forward_latest_optim = self.forward_checkpoints/'latest_optim.pyt'
+        self.forward_latest_weights = self.forward_checkpoints/'latest_weights_trained.pyt'
+        self.forward_latest_optim = self.forward_checkpoints/'latest_optim_trained.pyt'
         self.forward_output = self.base/'model_outputs'/f'{tts_id}.forward'
         self.forward_step = self.forward_checkpoints/'step.npy'
         self.forward_log = self.forward_checkpoints/'tensorboard'

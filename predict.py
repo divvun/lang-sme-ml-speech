@@ -25,24 +25,32 @@ def main():
 
         data = Dataset.from_pandas(data)
         return(data)
+
+    # test = pd.read_parquet('./data/speech-sme-asr/test_asr.parquet')
+    # test = Dataset.from_pandas(test)
     # with open('./data/speech-sme-asr/test_asr.pkl', 'rb') as f:
     #     test = pickle.load(f)
-    #     # print(test[0])
+        # print(test.shape)
     #     # exit()
     test = read_txt('./data/speech-sme-asr/test_asr.txt')
     processor = Wav2Vec2Processor.from_pretrained('./asr_output/pretrained_processor')
-    model = Wav2Vec2ForCTC.from_pretrained("./checkpoints/sme_speech_tts.asr_forward/checkpoint-27363").to('cpu')
+    model = Wav2Vec2ForCTC.from_pretrained("checkpoints/sme_speech_tts.asr_forward/checkpoint-27364").to('cpu')
     # print(model)
     # exit()
     # resampler = torchaudio.transforms.Resample(48_000, 16_000)
+    CHARS_TO_IGNORE = r'[\,\?\.\!\-\;\:\"\“\%\‘\”\�\$\©\~\)\(\§\'\d]'
+    def remove_special_characters(batch):
+        batch["sentence"] = re.sub(CHARS_TO_IGNORE, '', batch["sentence"]).lower() + " "
+        return batch
+    test = test.map(remove_special_characters)
 
     def speech_file_to_array_fn(batch):
         speech_array, sampling_rate = torchaudio.load('./data/'+ batch["path"])
         batch["speech"] = speech_array.squeeze().numpy()
         return batch
 
-    test_dataset = test.map(speech_file_to_array_fn)
-    input_dict = processor(test_dataset['speech'][:11],sampling_rate=16000, return_tensors="pt", padding=True)
+    test = test.map(speech_file_to_array_fn)
+    input_dict = processor(test['speech'][:11],sampling_rate=16000, return_tensors="pt", padding=True)
     with torch.no_grad():
         logits = model(input_dict.input_values.to('cpu')).logits
 
@@ -50,7 +58,7 @@ def main():
     predicted_ids = torch.argmax(logits, dim=-1)
 
     print("Prediction:", processor.batch_decode(predicted_ids))
-    print("Reference:", test_dataset["sentence"][:11])
+    print("Reference:", test["sentence"][:11])
     # exit()
     wer = load_metric("wer")
 
@@ -69,7 +77,7 @@ def main():
         batch["pred_strings"] = processor.batch_decode(pred_ids)
         return batch
 
-    result = test_dataset.map(evaluate, batched=True, batch_size=8) # batch_size=8 -> requires ~14.5GB GPU memory
+    result = test.map(evaluate, batched=True, batch_size=8) # batch_size=8 -> requires ~14.5GB GPU memory
 
     print("WER: {:2f}".format(100 * wer.compute(predictions=result["pred_strings"], references=result["sentence"])))
 

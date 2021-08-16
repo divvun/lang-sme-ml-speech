@@ -79,7 +79,7 @@ def write_vocab_dict_to_disk(vocab_dict, vocab_path="vocab.json"):
 
 def speech_file_to_array_fn(batch):
     speech_array, sampling_rate = torchaudio.load('./data/' + batch["path"])
-    batch["speech"] = speech_array[0].numpy()
+    batch["speech"] = speech_array.squeeze().numpy()
     batch["sampling_rate"] = sampling_rate
     batch["target_text"] = batch["sentence"]
     return batch
@@ -129,9 +129,9 @@ def prepare(reg=True, from_scratch=False):
     test = test.map(speech_file_to_array_fn, remove_columns=test.column_names)
 
     print("Preparing train dataset")
-    train = train.map(prepare_dataset, remove_columns=train.column_names, batch_size=1, num_proc=1, batched=True)
+    train = train.map(prepare_dataset, remove_columns=train.column_names, batch_size=1, num_proc=4, batched=True)
     print("Preparing test dataset")
-    test = test.map(prepare_dataset, remove_columns=test.column_names, batch_size=1, num_proc=1, batched=True)
+    test = test.map(prepare_dataset, remove_columns=test.column_names, batch_size=1, num_proc=4, batched=True)
     print("Done")
     
     pickle.dump(train,open('./data/speech-sme-asr/train_asr.pkl', 'wb'))
