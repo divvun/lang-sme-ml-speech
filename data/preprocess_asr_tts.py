@@ -21,7 +21,7 @@ def pre_prepocess():
     # subprocess.check_output('python split_files_tts.py', shell=True, stderr=subprocess.STDOUT)
     subprocess.check_output('python split_files.py', shell=True, stderr=subprocess.STDOUT)
 
-    print('Downsapling for ASR & TTS ...')
+    print('Resapling for TTS ...')
     
     subprocess.check_output('python downsample_wav.py', shell=True, stderr=subprocess.STDOUT)
 
