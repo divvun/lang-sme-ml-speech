@@ -7,7 +7,7 @@
 #SBATCH --gres=gpu:1
 
 ## Set up job environment:
-set -o errexit  # Exit the script on any error
+# set -o errexit  # Exit the script on any error
 set -o nounset  # Treat any unset variables as an error
 
 module --quiet purge  # Reset the modules to the system default
@@ -25,7 +25,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/cluster/projects/nn9866k/extra/lib
 # Run our computation
 RET=1
 until [[ ${RET} -eq 0 ]]; do
-	python train_forward.py 
+	python train_forward_tts_only.py 
 	RET=$?
 	sleep 1
 done

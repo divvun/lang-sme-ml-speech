@@ -126,6 +126,7 @@ if __name__ == '__main__':
     if input_text:
         text = clean_text(input_text.strip())
         inputs = [text_to_sequence(text)]
+        inputs_raw = text
     else:
         with open('sentences.txt') as f:
             inputs_raw = [clean_text(l.strip()) for l in f]

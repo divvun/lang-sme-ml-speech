@@ -11,11 +11,13 @@ _punctuation = '!\'().:;? '
 _special = '-'
 
 LETTERS = 'AaÁáBbCcČčDdĐđEeFfGgHhIiJjKkLlMmNnŊŋOoPpRrSsŠšTtŦŧUuVvZzŽžÑñøØÆæøØÅåÄä'
+
+# LETTERS = 'AaÁáBbCcDdEeFfGgHhIiJjKkLlMmNnŊŋOoPpRrSsTtUuVvZzŃńÑñÆæØøÅåÄäÖö'
 # Prepend "@" to ARPAbet symbols to ensure uniqueness (some are the same as uppercase letters):
 # _arpabet = [s for s in LETTERS]
 
 # Phonemes
-# _vowels = 'iyɨʉɯuɪʏʊeøɘəɵɤoɛœɜɞʌɔæɐaɶɑɒᵻ'
+# _vowels = 'iyɨʉɯuɪʏʊeøɘəɵɤoɛœɜɞʌɔæɐaɶɑɒᵻ'$ srun --ntasks=1 --mem-per-cpu=16G --time=03:30:00 --qos=devel --account=nn9866k --pty bash -i
 # _non_pulmonic_consonants = 'ʘɓǀɗǃʄǂɠǁʛ'
 # _pulmonic_consonants = 'pbtdʈɖcɟkɡqɢʔɴŋɲɳnɱmʙrʀⱱɾɽɸβfvθðszʃʒʂʐçʝxɣχʁħʕhɦɬɮʋɹɻjɰlɭʎʟ'
 # _suprasegmentals = 'ˈˌːˑ'

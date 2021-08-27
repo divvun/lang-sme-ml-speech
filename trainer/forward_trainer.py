@@ -51,7 +51,7 @@ import numpy as np
 
 
 def get_unpaired_txt(stop_point):
-    with open('sme-freecorpus.txt', 'r', newline='\n') as text_file: 
+    with open('smj-freecorpus.txt', 'r', newline='\n') as text_file: 
         sents_list = []
         for line_terminated in text_file: 
             if len(line_terminated) > 115:
