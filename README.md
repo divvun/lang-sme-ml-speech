@@ -56,3 +56,11 @@ When you run `python gen_forward --alpha .95 waveglow` or `python gen_forward --
 11. Deactivate env.
 12. Create a file like `run_training.sh` - more [here](https://documentation.sigma2.no/getting_started/tutorials/gpu.html)
 13. `sbatch [your shell script]` will queue your task and run. You will see the running output in a file {job_id}.out, but please note, it will take a while before you see the first print statement. They arrive in batches (e.g. only after epoch is finished, you will see the prints). To see if the training is going, you can monitor .csv file with gpu usage stats. 
+
+# Running with Nix
+
+A nix-shell file exists (`shell.nix`) that can be used with the nix package manager to take care of installing all Python and system requirements in one command.
+
+1. Install nix (the package manager, not the OS) following the instructions on https://nixos.org/download.html. This should not be more than running the `curl` command.
+2. Inside the top level directory of this repository, run `nix-shell`. This might take a while downloading dependencies and ultimately drop you in a nix-shell.
+3. Proeeed with the "Data Preparation" step above and continue on to training the model.
